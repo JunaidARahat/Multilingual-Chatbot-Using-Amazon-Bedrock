@@ -47,7 +47,7 @@ def chat():
 
     try:
         response_text = my_chatbot(language, user_text)
-        return jsonify({"response": response_text})
+        return jsonify({"response": response_text}) 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

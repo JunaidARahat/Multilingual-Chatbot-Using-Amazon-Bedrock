@@ -1,3 +1,4 @@
+langchain-aws
 python-dotenv
 boto3
 flask

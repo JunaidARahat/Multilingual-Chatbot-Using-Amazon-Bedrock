@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bedrock Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        select, textarea, button {
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .response-container {
+            margin-top: 20px;
+        }
+
+        .response-header {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .response {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 10px;
+            color: #444;
+            font-size: 1rem;
+        }
+    </style>
+    <script>
+        async function sendMessage() {
+            const language = document.getElementById("language").value;
+            const userText = document.getElementById("userText").value;
+
+            const responseElement = document.getElementById("response");
+            responseElement.innerHTML = "Processing...";
+
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ language, user_text: userText })
+            });
+
+            const data = await response.json();
+            if (data.error) {
+                responseElement.innerHTML = `<span style="color: red;">Error: ${data.error}</span>`;
+            } else {
+                responseElement.innerHTML = data.response;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Multilingual Chatbot Using Amazon Bedrock</h1>
+        <label for="language">Select Language:</label>
+        <select id="language">
+            <option value="arabic">Arabic</option>
+            <option value="urdu">Urdu</option>
+            <option value="english">English</option>
+        </select>
+
+        <label for="userText">Your Question:</label>
+        <textarea id="userText" rows="4" placeholder="Type your question here..."></textarea>
+
+        <button onclick="sendMessage()">Submit</button>
+
+        <div class="response-container">
+            <p class="response-header">Response:</p>
+            <div class="response" id="response"></div>
+        </div>
+    </div>
+</body>
+</html>
+ 
